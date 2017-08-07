@@ -239,6 +239,9 @@ public class Car {
 		return (aCar);
 	}
 	
-	
+	public void setDoors(String strdoors) {
+		// Adding for createcardb (Logan)
+		
+	}
 	
 } // End of class Car
