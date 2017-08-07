@@ -1,0 +1,294 @@
+package COMMON_CARDB;
+
+import java.awt.EventQueue;
+import javax.swing.*;
+import java.io.*;
+import COMMON_CARDB.Car;
+import COMMON_CARDB.FileIO;
+import org.apache.commons.lang3.*;
+
+import javax.swing.JFrame;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class CreateCarDb {
+
+	private JFrame frmCreateCarDatabase;
+	private JTextField textFieldvinNumber;
+	private JTextField textFieldmake;
+	private JTextField textFieldmodel;
+	private JTextField textFieldtype;
+	private JTextField textFieldengine;
+	private JTextField textFielddoors;
+	private JTextField textFieldColor;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CreateCarDb window = new CreateCarDb();
+					window.frmCreateCarDatabase.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public CreateCarDb() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmCreateCarDatabase = new JFrame();
+		frmCreateCarDatabase.setTitle("Create Car Database");
+		frmCreateCarDatabase.setBounds(100, 100, 450, 329);
+		frmCreateCarDatabase.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCreateCarDatabase.getContentPane().setLayout(null);
+		
+		JLabel EnterVIN = new JLabel("Enter VIN:");
+		EnterVIN.setBounds(31, 20, 83, 23);
+		frmCreateCarDatabase.getContentPane().add(EnterVIN);
+		
+		textFieldvinNumber = new JTextField();
+		textFieldvinNumber.setBounds(245, 15, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldvinNumber);
+		textFieldvinNumber.setColumns(10);
+		
+		JLabel Entermake = new JLabel("Enter make:");
+		Entermake.setBounds(31, 55, 83, 23);
+		frmCreateCarDatabase.getContentPane().add(Entermake);
+		
+		textFieldmake = new JTextField();
+		textFieldmake.setColumns(10);
+		textFieldmake.setBounds(245, 50, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldmake);
+		
+		JLabel Entermodel = new JLabel("Enter model:");
+		Entermodel.setBounds(31, 92, 83, 23);
+		frmCreateCarDatabase.getContentPane().add(Entermodel);
+		
+		textFieldmodel = new JTextField();
+		textFieldmodel.setColumns(10);
+		textFieldmodel.setBounds(245, 87, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldmodel);
+		
+		JLabel Entertype = new JLabel("Enter type:");
+		Entertype.setBounds(31, 129, 98, 23);
+		frmCreateCarDatabase.getContentPane().add(Entertype);
+		
+		textFieldtype = new JTextField();
+		textFieldtype.setColumns(10);
+		textFieldtype.setBounds(245, 125, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldtype);
+		
+		JLabel Enterengine = new JLabel("Enter Engine Volume:");
+		Enterengine.setBounds(31, 165, 151, 23);
+		frmCreateCarDatabase.getContentPane().add(Enterengine);
+		
+		textFieldengine = new JTextField();
+		textFieldengine.setColumns(10);
+		textFieldengine.setBounds(245, 166, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldengine);
+		
+		JLabel Enterdoors = new JLabel("Enter doors");
+		Enterdoors.setBounds(31, 200, 151, 23);
+		frmCreateCarDatabase.getContentPane().add(Enterdoors);
+		
+		textFielddoors = new JTextField();
+		textFielddoors.setColumns(10);
+		textFielddoors.setBounds(245, 201, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFielddoors);
+		
+		JButton submitButton = new JButton("Submit");
+		submitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				try {
+					btnSubmit_CLICK();
+				}
+				catch (Exception arg0){
+					System.out.println(e.toString());
+				}
+			}
+		});
+		submitButton.setBounds(156, 270, 117, 29);
+		frmCreateCarDatabase.getContentPane().add(submitButton);
+		
+		JLabel Entercolor = new JLabel("Enter color");
+		Entercolor.setBounds(31, 235, 151, 23);
+		frmCreateCarDatabase.getContentPane().add(Entercolor);
+		
+		textFieldColor = new JTextField();
+		textFieldColor.setColumns(10);
+		textFieldColor.setBounds(245, 239, 130, 26);
+		frmCreateCarDatabase.getContentPane().add(textFieldColor);
+	} //end of method initialize
+	
+	private void btnSubmit_CLICK() {
+		
+		//-------------- First, validate all the text fields
+		// If any problem, a dialog warning pops up to stop the program
+		boolean isValidated = validateTextFields();
+		
+		if (! isValidated) return;
+		
+		
+		//-------------- All the text fields have been validated
+		FileIO fileIOHandler = new FileIO();
+		
+		// Declare output file database: bookDatabase.txt
+		// MUST use \ to qualify '\' in the path of the file
+		File outputFile = new File("/Users/loganmoore/Documents/workspace/carDatabase.txt");
+		
+		String strvinNumber = textFieldvinNumber.getText();
+		long vin = Long.parseLong(strvinNumber);
+		
+		String strmake = textFieldmake.getText();
+		String strmodel = textFieldmodel.getText();
+		String strtype = textFieldtype.getText();
+		String strengine = textFieldtype.getText();
+		String strdoors = textFieldengine.getText();
+		
+		// Create a Car object
+		Car aCar = new Car (vin, strmake, strdoors);
+		aCar.setModel(strmodel);
+		aCar.setType(strtype);
+		aCar.setEngine(strengine);
+		aCar.setDoors(strdoors);
+		
+		// Get the string of book data
+		String strCarInfo = aCar.toString();
+		
+		
+		try {
+			
+			// Write the string to the book database file
+			// by adding a line to the file
+			fileIOHandler.appendOneLineToFile(outputFile, strCarInfo);
+		}
+		catch (IOException ex){ 
+      		ex.printStackTrace();
+    		}
+		
+
+		// At this point, already successfully inserting a new book record into the database
+		JOptionPane.showMessageDialog(frmCreateCarDatabase, "The new car record has been successfully inserted into the database.");
+		
+		// After successfully inserting a new book record to the database
+		// refresh all the text fields to prepare for the next record
+		textFieldvinNumber.setText("");
+		textFieldmake.setText("");
+		textFieldmodel.setText("");
+		textFieldtype.setText("");
+		textFieldtype.setText("");
+		textFieldengine.setText("");
+
+		
+	} // End of btnSubmit_CLICK	
+
+	private boolean validateTextFields() {
+boolean isValidated = true;
+		
+		//----------- Validate VIN text field
+		
+		try{
+			Validate.notBlank(textFieldvinNumber.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - VIN must have a Numeric Value.");
+			textFieldvinNumber.requestFocusInWindow(); // make it ready to enter the value
+			textFieldvinNumber.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+		
+		if (! isValidated) return (isValidated);
+		
+		// For VIN, also need to verify the entered value is a valid numeric
+		try{
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "VIN must have a Numeric Value.");
+			textFieldvinNumber.requestFocusInWindow(); // make it ready to enter the value
+			textFieldvinNumber.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+		
+		if (! isValidated) return (isValidated);
+		
+		//----------- Validate make text field
+		
+		try{
+			Validate.notBlank(textFieldmake.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - make cannot be blank !!!.");
+			textFieldmake.requestFocusInWindow(); // make it ready to enter the value
+			textFieldmake.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+
+		if (! isValidated) return (isValidated);
+
+		//----------- Validate model text field
+		
+		try{
+			Validate.notBlank(textFieldmodel.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - model cannot be blank !!!.");
+			textFieldmodel.requestFocusInWindow(); // make it ready to enter the value
+			textFieldmodel.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+
+		if (! isValidated) return (isValidated);
+		
+		//----------- Validate type text field
+		
+		try{
+			Validate.notBlank(textFieldtype.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - type cannot be blank !!!.");
+			textFieldtype.requestFocusInWindow(); // make it ready to enter the value
+			textFieldtype.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+
+		if (! isValidated) return (isValidated);
+		
+		//----------- Validate engine text field
+		
+		try{
+			Validate.notBlank(textFieldtype.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - Month&Year cannot be blank !!!.");
+			textFieldtype.requestFocusInWindow(); // make it ready to enter the value
+			textFieldtype.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+
+		if (! isValidated) return (isValidated);
+		
+		//----------- Validate doors text field
+		
+		try{
+			Validate.notBlank(textFieldengine.getText());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(frmCreateCarDatabase, "All the text fields must have valid values - doors cannot be blank !!!.");
+			textFieldengine.requestFocusInWindow(); // make it ready to enter the value
+			textFieldengine.selectAll(); // select all text in the text field to delete it or to replace it
+			isValidated = false;
+		}
+
+		
+		
+		return (isValidated);
+	}
+} //End of class CreatebookDB
