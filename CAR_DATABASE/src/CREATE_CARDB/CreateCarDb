@@ -1,4 +1,4 @@
-package COMMON_CARDB;
+package CREATE_CARDB;
 
 import java.awt.EventQueue;
 import javax.swing.*;
