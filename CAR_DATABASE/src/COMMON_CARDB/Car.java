@@ -1,7 +1,7 @@
 package COMMON_CARDB;
 
 /**
- * @model Chad Fortune
+ * @author Chad Fortune
  * 
  */
 public class Car {
@@ -237,11 +237,6 @@ public class Car {
 		aCar.setColor(nextSubstring);
 
 		return (aCar);
-	}
-	
-	public void setDoors(String strdoors) {
-		// Adding for createcardb (Logan)
-		
-	}
+	} // End of method recreateCarFromString
 	
 } // End of class Car
