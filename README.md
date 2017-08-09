@@ -6,7 +6,7 @@ Package: COMMON_CARDB
      Car.java (finished) - class attribute change from homework 5: Book.java
 
 Package: CREATE_CARDB
-     CreateCarDB.java - Needed
+     CreateCarDB.java - finished in working state
 
 Package: SEARCH_CARDB
-     SearchCarDb.java - Needed
+     SearchCarDb.java - finished in working state
